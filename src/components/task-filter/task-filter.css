@@ -1,0 +1,97 @@
+.filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.filters li {
+  display: inline;
+  cursor: pointer;
+}
+
+.filters li button {
+  display: inline-block;
+  color: inherit;
+  margin: 3px;
+  padding: 3px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.filters li button:not(.selected) {
+  cursor: pointer;
+}
+
+.filters li button.selected {
+  border-color: rgba(175, 47, 47, 0.2);
+}
+
+.filters li:hover button {
+  border-color: rgba(175, 47, 47, 0.1);
+}
+
+
+.filters button {
+  margin-right: 10px; 
+}
+
+.filters button:last-child {
+  margin-right: 0; 
+}
+
+.task {
+  display: flex;
+  align-items: center; 
+}
+
+.task input[type="text"] {
+  flex-grow: 1; 
+  margin: 0; 
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+  box-sizing: border-box; 
+}
+
+.task label {
+  flex-grow: 1; 
+}
+
+.task button {
+  margin-left: 10px; 
+}
+
+
+input[type='checkbox'] {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  appearance: none;
+  border: 2px solid #5dc2af;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  margin-right: 10px; 
+}
+
+input[type='checkbox']:checked {
+  background-color: #5dc2af;
+  border-color: #5dc2af;
+}
+
+input[type='checkbox']:checked:before {
+  content: '✔';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+}
+
+input[type='checkbox']:hover {
+  border-color: #4da78b;
+  background-color: #4da78b;
+}
