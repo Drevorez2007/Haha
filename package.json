@@ -1,6 +1,7 @@
 {
   "name": "todomy",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
@@ -12,6 +13,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "5.0.1",
+    "uuid": "^11.1.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -20,20 +22,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "lint:debug": "eslint --no-ignore --debug \"src/**/*.{js,jsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "prepare": "husky install"
-  },
-  "eslintConfig": {
-    "extends": [
-      "airbnb",
-      "airbnb/hooks",
-      "prettier"
-    ],
-    "parser": "babel-eslint",
-    "plugins": [
-      "prettier"
-    ]
   },
   "browserslist": {
     "production": [
@@ -48,15 +40,14 @@
     ]
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb": "^19.0.4",
+    "@babel/eslint-parser": "^7.27.0",
+    "@babel/preset-react": "^7.26.3",
+    "@eslint/js": "^9.25.1",
+    "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "espree": "^10.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
     "prettier": "^3.5.3"

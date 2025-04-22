@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 import TaskList from '../task-list/task-list';
 import NewTaskForm from '../new-task-form/new-task-form';
 import Footer from '../footer/footer';
 import './app.css';
+import { v4 as uuidv4 } from 'uuid';
 
 class App extends React.Component {
   constructor() {
@@ -22,7 +25,7 @@ class App extends React.Component {
 
   handleAdd = (label) => {
     const newTask = {
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       label,
       completed: false,
       created: new Date(),
