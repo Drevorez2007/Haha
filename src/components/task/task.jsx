@@ -59,7 +59,9 @@ class Task extends Component {
             </span>
             <button
               type="button"
-              onClick={() => this.setState({ isEditing: true, tempLabel: label })}
+              onClick={() =>
+                this.setState({ isEditing: true, tempLabel: label })
+              }
             >
               ✎
             </button>

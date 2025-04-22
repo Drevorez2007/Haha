@@ -1,10 +1,12 @@
 import js from '@eslint/js';
-import prettier from 'eslint-config-prettier';  // добавь сюда
+import prettier from 'eslint-config-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import babelParser from '@babel/eslint-parser';
 
 export default [
+  js.configs.recommended,
+  prettier,
   {
     files: ['**/*.{js,jsx}'],
     ignores: ['node_modules', 'build', 'dist', '**/*.test.js', '**/*.spec.js'],
@@ -30,13 +32,13 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...prettier.rules,  // используй правильно импортированный prettier
+      ...prettier.rules,
       'no-console': 'warn',
       'no-unused-vars': [
         'warn',
         {
           argsIgnorePattern: '^_',
-          varsIgnorePattern: '^React$',  // Игнорирует неиспользуемый React
+          varsIgnorePattern: '^React$', // Игнорирует неиспользуемый React
         },
       ],
       'react/jsx-uses-react': 'off',

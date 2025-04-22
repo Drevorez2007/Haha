@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import './footer.css';
@@ -13,11 +14,7 @@ function Footer({ count, filter, onFilterChange, onClearCompleted }) {
       </div>
 
       <div className="footer-right">
-        <button
-          className="clear"
-          type="button"
-          onClick={onClearCompleted}
-        >
+        <button className="clear" type="button" onClick={onClearCompleted}>
           Clear completed
         </button>
       </div>

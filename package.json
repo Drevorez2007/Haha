@@ -48,14 +48,15 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "espree": "^10.3.0",
-    "husky": "^9.1.7",
+    "husky": "^8.0.0",
     "lint-staged": "^15.5.1",
     "prettier": "^3.5.3"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
+    "**/*.{js,jsx}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "git add"
     ]
   }
 }

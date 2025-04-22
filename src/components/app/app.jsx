@@ -17,11 +17,12 @@ class App extends React.Component {
   }
 
   handleEdit = (id, newLabel) => {
-    this.setState(prev => ({
-      tasks: prev.tasks.map(t => (t.id === id ? { ...t, label: newLabel } : t)),
+    this.setState((prev) => ({
+      tasks: prev.tasks.map((t) =>
+        t.id === id ? { ...t, label: newLabel } : t,
+      ),
     }));
   };
-  
 
   handleAdd = (label) => {
     const newTask = {
@@ -30,28 +31,26 @@ class App extends React.Component {
       completed: false,
       created: new Date(),
     };
-    this.setState(prev => ({ tasks: [...prev.tasks, newTask] }));
+    this.setState((prev) => ({ tasks: [...prev.tasks, newTask] }));
   };
 
   handleToggle = (id) => {
-    this.setState(prev => ({
-      tasks: prev.tasks.map(t =>
-        t.id === id ? { ...t, completed: !t.completed } : t
+    this.setState((prev) => ({
+      tasks: prev.tasks.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t,
       ),
     }));
   };
 
   handleDelete = (id) => {
-    this.setState(prev => ({
-      tasks: prev.tasks.filter(t => t.id !== id),
+    this.setState((prev) => ({
+      tasks: prev.tasks.filter((t) => t.id !== id),
     }));
   };
 
-
-
   handleClearCompleted = () => {
-    this.setState(prev => ({
-      tasks: prev.tasks.filter(t => !t.completed),
+    this.setState((prev) => ({
+      tasks: prev.tasks.filter((t) => !t.completed),
     }));
   };
 
@@ -62,7 +61,7 @@ class App extends React.Component {
   render() {
     const { tasks, filter } = this.state;
 
-    const filteredTasks = tasks.filter(t => {
+    const filteredTasks = tasks.filter((t) => {
       if (filter === 'active') return !t.completed;
       if (filter === 'completed') return t.completed;
       return true;
@@ -78,7 +77,7 @@ class App extends React.Component {
           onEdit={this.handleEdit}
         />
         <Footer
-          count={tasks.filter(t => !t.completed).length}
+          count={tasks.filter((t) => !t.completed).length}
           filter={filter}
           onFilterChange={this.handleFilterChange}
           onClearCompleted={this.handleClearCompleted}

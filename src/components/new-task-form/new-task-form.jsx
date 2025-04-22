@@ -9,7 +9,7 @@ class NewTaskForm extends Component {
   }
 
   handleChange = (e) => {
-    const { value } = e.target;  
+    const { value } = e.target;
     this.setState({ label: value });
   };
 
@@ -24,7 +24,7 @@ class NewTaskForm extends Component {
   };
 
   render() {
-    const { label } = this.state; 
+    const { label } = this.state;
 
     return (
       <form className="new-task-form" onSubmit={(e) => e.preventDefault()}>
@@ -45,4 +45,3 @@ NewTaskForm.propTypes = {
 };
 
 export default NewTaskForm;
-
