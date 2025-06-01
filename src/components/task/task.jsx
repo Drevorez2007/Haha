@@ -4,32 +4,66 @@ import './task.css';
 import { formatDistanceToNow } from 'date-fns';
 
 class Task extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEditing: false,
-      tempLabel: props.label,
-    };
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      if (this.props.isTiming) {
+        this.forceUpdate();
+      }
+    }, 1000);
   }
 
-  handleKeyDown = (e) => {
-    const { tempLabel } = this.state;
-    const { onEdit, id, label } = this.props;
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
-    if (e.key === 'Enter') {
-      const trimmed = tempLabel.trim();
-      if (trimmed !== '') {
-        onEdit(id, trimmed);
-        this.setState({ isEditing: false });
-      }
-    } else if (e.key === 'Escape') {
-      this.setState({ isEditing: false, tempLabel: label });
+  handleStartStop = () => {
+    const { id, isTiming, timeSpent, startTime, onUpdate } = this.props;
+
+    if (isTiming) {
+      const now = Date.now();
+      const elapsed = now - startTime;
+      onUpdate(id, {
+        isTiming: false,
+        startTime: null,
+        timeSpent: timeSpent + elapsed,
+      });
+    } else {
+      onUpdate(id, {
+        isTiming: true,
+        startTime: Date.now(),
+      });
     }
   };
 
+  formatTime = (ms) => {
+    const total = Math.floor(ms / 1000);
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    return [h, m, s].map((val) => String(val).padStart(2, '0')).join(':');
+  };
+
   render() {
-    const { id, label, completed, created, onToggle, onDelete } = this.props;
-    const { isEditing, tempLabel } = this.state;
+    const {
+      id,
+      label,
+      completed,
+      created,
+      onToggle,
+      onDelete,
+      onEdit,
+      timeSpent,
+      isTiming,
+      startTime,
+    } = this.props;
+
+    const actualTime =
+      isTiming && startTime ? timeSpent + (Date.now() - startTime) : timeSpent;
+
+    const { isEditing, tempLabel } = this.state || {
+      isEditing: false,
+      tempLabel: label,
+    };
 
     return (
       <li className={`task ${completed ? 'completed' : ''}`}>
@@ -40,23 +74,34 @@ class Task extends Component {
         />
         {isEditing ? (
           <>
-            <label htmlFor={`task-input-${id}`} style={{ display: 'none' }}>
-              {label}
-            </label>
             <input
-              id={`task-input-${id}`}
               type="text"
               value={tempLabel}
               onChange={(e) => this.setState({ tempLabel: e.target.value })}
-              onKeyDown={this.handleKeyDown}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (tempLabel.trim()) {
+                    onEdit(id, tempLabel.trim());
+                    this.setState({ isEditing: false });
+                  }
+                } else if (e.key === 'Escape') {
+                  this.setState({ isEditing: false, tempLabel: label });
+                }
+              }}
             />
           </>
         ) : (
           <>
-            <label htmlFor={`task-checkbox-${id}`}>{label}</label>
+            <label>{label}</label>
             <span className="created">
               created {formatDistanceToNow(created, { addSuffix: true })}
             </span>
+            <div className="timer">
+              <span>{this.formatTime(actualTime)}</span>
+              <button type="button" onClick={this.handleStartStop}>
+                {isTiming ? '⏸' : '▶'}
+              </button>
+            </div>
             <button
               type="button"
               onClick={() =>
@@ -83,6 +128,10 @@ Task.propTypes = {
   onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  timeSpent: PropTypes.number.isRequired,
+  isTiming: PropTypes.bool.isRequired,
+  startTime: PropTypes.number,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Task;

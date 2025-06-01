@@ -16,6 +16,18 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.timerID = setInterval(() => {
+      this.setState((prev) => ({
+        tasks: [...prev.tasks],
+      }));
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
   handleEdit = (id, newLabel) => {
     this.setState((prev) => ({
       tasks: prev.tasks.map((t) =>
@@ -30,6 +42,9 @@ class App extends React.Component {
       label,
       completed: false,
       created: new Date(),
+      timeSpent: 0,
+      isTiming: false,
+      startTime: null,
     };
     this.setState((prev) => ({ tasks: [...prev.tasks, newTask] }));
   };
@@ -58,6 +73,12 @@ class App extends React.Component {
     this.setState({ filter });
   };
 
+  handleUpdateTask = (id, changes) => {
+    this.setState((prev) => ({
+      tasks: prev.tasks.map((t) => (t.id === id ? { ...t, ...changes } : t)),
+    }));
+  };
+
   render() {
     const { tasks, filter } = this.state;
 
@@ -75,7 +96,9 @@ class App extends React.Component {
           onToggle={this.handleToggle}
           onDelete={this.handleDelete}
           onEdit={this.handleEdit}
+          onUpdate={this.handleUpdateTask}
         />
+
         <Footer
           count={tasks.filter((t) => !t.completed).length}
           filter={filter}

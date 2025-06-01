@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Task from '../task/task';
 import './task-list.css';
 
-function TaskList({ tasks, onToggle, onDelete, onEdit }) {
+function TaskList({ tasks, onToggle, onDelete, onEdit, onUpdate }) {
   return (
     <ul>
       {tasks.map((task) => (
@@ -14,6 +14,7 @@ function TaskList({ tasks, onToggle, onDelete, onEdit }) {
           onToggle={onToggle}
           onDelete={onDelete}
           onEdit={onEdit}
+          onUpdate={onUpdate}
         />
       ))}
     </ul>
@@ -21,17 +22,11 @@ function TaskList({ tasks, onToggle, onDelete, onEdit }) {
 }
 
 TaskList.propTypes = {
-  tasks: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired,
-      created: PropTypes.instanceOf(Date).isRequired,
-    }),
-  ).isRequired,
+  tasks: PropTypes.array.isRequired,
   onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default TaskList;
