@@ -1,3 +1,1 @@
-[[[https://haha-bice-eta.vercel.app]](https://haha-zly3.vercel.app)
-я когда писал проект не сразу понял что стили css давались
-а когда понял это было уже поздно потому что уже достаточно много написал
+https://haha-nea4o823w-drevorez2007s-projects.vercel.app
