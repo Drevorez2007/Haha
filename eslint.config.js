@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import babelParser from '@babel/eslint-parser';
 
 export default [
-  js.configs.recommended,
+  // js.configs.recommended, //
   prettier,
   {
     files: ['**/*.{js,jsx}'],
@@ -13,7 +13,7 @@ export default [
     languageOptions: {
       parser: babelParser,
       parserOptions: {
-        ecmaVersion: 'latest',
+        ecmaVersion: 2021,
         sourceType: 'module',
         requireConfigFile: false,
         babelOptions: {
@@ -24,6 +24,8 @@ export default [
         document: 'readonly',
         window: 'readonly',
         crypto: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
     },
     plugins: {
@@ -31,14 +33,13 @@ export default [
       'react-hooks': reactHooks,
     },
     rules: {
-      ...js.configs.recommended.rules,
       ...prettier.rules,
       'no-console': 'warn',
       'no-unused-vars': [
         'warn',
         {
           argsIgnorePattern: '^_',
-          varsIgnorePattern: '^React$', // Игнорирует неиспользуемый React
+          varsIgnorePattern: '^React$',
         },
       ],
       'react/jsx-uses-react': 'off',
