@@ -16,7 +16,7 @@
 }
 
 .task .created {
-  font-size: 13px;
+  font-size: 11px;
   color: gray;
 }
 
@@ -65,4 +65,9 @@
   transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
+}
+
+.timer {
+  font-size: 0.75rem;
+  padding-left: 10px;
 }
