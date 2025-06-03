@@ -20,6 +20,7 @@ function TaskList({ tasks, onToggle, onDelete, onEdit, onUpdate }) {
           onDelete={onDelete}
           onEdit={onEdit}
           onUpdate={onUpdate}
+          elapsed={task.elapsed}
         />
       ))}
     </ul>

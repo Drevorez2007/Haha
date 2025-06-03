@@ -22,7 +22,9 @@ class Task extends Component {
     const totalSeconds = Math.floor(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, '0')}:${seconds
+      .toString()
+      .padStart(2, '0')}`;
   };
 
   render() {
@@ -36,9 +38,12 @@ class Task extends Component {
       onEdit,
       isTiming,
       timeLeft,
+      elapsed,
     } = this.props;
 
     const { isEditing, tempLabel } = this.state;
+
+    const displayTime = timeLeft > 0 ? timeLeft : elapsed || 0;
 
     return (
       <li className={`task ${completed ? 'completed' : ''}`}>
@@ -70,12 +75,8 @@ class Task extends Component {
               created {formatDistanceToNow(created, { addSuffix: true })}
             </span>
             <div className="timer">
-              <span>{this.formatTime(timeLeft)}</span>
-              <button
-                type="button"
-                onClick={this.handleStartStop}
-                disabled={timeLeft <= 0}
-              >
+              <span>{this.formatTime(displayTime)}</span>
+              <button type="button" onClick={this.handleStartStop}>
                 {isTiming ? '⏸' : '▶'}
               </button>
             </div>
@@ -96,5 +97,4 @@ class Task extends Component {
     );
   }
 }
-
 export default Task;

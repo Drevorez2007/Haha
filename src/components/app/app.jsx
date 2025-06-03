@@ -18,21 +18,31 @@ class App extends React.Component {
 
   componentDidMount() {
     this.timerID = setInterval(() => {
-      this.setState((prev) => ({
-        tasks: prev.tasks.map((task) => {
-          if (!task.isTiming || task.timeLeft <= 0) return task;
+      this.setState((prev) => {
+        const newTasks = prev.tasks.map((task) => {
+          if (!task.isTiming) return task;
 
-          const newTimeLeft = task.timeLeft - 1000;
-          return {
-            ...task,
-            timeLeft: newTimeLeft > 0 ? newTimeLeft : 0,
-            isTiming: newTimeLeft > 0,
-          };
-        }),
-      }));
+          if (task.timeLeft > 0) {
+            const newTimeLeft = task.timeLeft - 1000;
+            return {
+              ...task,
+              timeLeft: newTimeLeft > 0 ? newTimeLeft : 0,
+              isTiming: newTimeLeft > 0,
+            };
+          } else {
+            const prevElapsed =
+              prev.tasks.find((t) => t.id === task.id)?.elapsed || 0;
+            return {
+              ...task,
+              elapsed: prevElapsed + 1000,
+            };
+          }
+        });
+
+        return { tasks: newTasks };
+      });
     }, 1000);
   }
-
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
@@ -51,7 +61,8 @@ class App extends React.Component {
       label,
       completed: false,
       created: new Date(),
-      timeLeft: duration,
+      timeLeft: duration || 0,
+      elapsed: 0,
       isTiming: false,
     };
     this.setState((prev) => ({ tasks: [...prev.tasks, newTask] }));
