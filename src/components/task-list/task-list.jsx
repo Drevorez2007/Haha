@@ -6,11 +6,16 @@ import './task-list.css';
 
 function TaskList({ tasks, onToggle, onDelete, onEdit, onUpdate }) {
   return (
-    <ul>
+    <ul className="task-list">
       {tasks.map((task) => (
         <Task
           key={task.id}
-          {...task}
+          id={task.id}
+          label={task.label}
+          completed={task.completed}
+          created={task.created}
+          isTiming={task.isTiming}
+          timeLeft={task.timeLeft}
           onToggle={onToggle}
           onDelete={onDelete}
           onEdit={onEdit}
@@ -22,7 +27,16 @@ function TaskList({ tasks, onToggle, onDelete, onEdit, onUpdate }) {
 }
 
 TaskList.propTypes = {
-  tasks: PropTypes.array.isRequired,
+  tasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+      created: PropTypes.instanceOf(Date).isRequired,
+      isTiming: PropTypes.bool.isRequired,
+      timeLeft: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
   onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
