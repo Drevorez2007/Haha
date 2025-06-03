@@ -19,7 +19,16 @@ class App extends React.Component {
   componentDidMount() {
     this.timerID = setInterval(() => {
       this.setState((prev) => ({
-        tasks: [...prev.tasks],
+        tasks: prev.tasks.map((task) => {
+          if (!task.isTiming || task.timeLeft <= 0) return task;
+
+          const newTimeLeft = task.timeLeft - 1000;
+          return {
+            ...task,
+            timeLeft: newTimeLeft > 0 ? newTimeLeft : 0,
+            isTiming: newTimeLeft > 0,
+          };
+        }),
       }));
     }, 1000);
   }
@@ -36,15 +45,14 @@ class App extends React.Component {
     }));
   };
 
-  handleAdd = (label) => {
+  handleAdd = (label, duration) => {
     const newTask = {
       id: uuidv4(),
       label,
       completed: false,
       created: new Date(),
-      timeSpent: 0,
+      timeLeft: duration,
       isTiming: false,
-      startTime: null,
     };
     this.setState((prev) => ({ tasks: [...prev.tasks, newTask] }));
   };
@@ -53,6 +61,13 @@ class App extends React.Component {
     this.setState((prev) => ({
       tasks: prev.tasks.map((t) =>
         t.id === id ? { ...t, completed: !t.completed } : t,
+      ),
+    }));
+  };
+  handleToggleTimer = (id) => {
+    this.setState((prev) => ({
+      tasks: prev.tasks.map((task) =>
+        task.id === id ? { ...task, isTiming: !task.isTiming } : task,
       ),
     }));
   };
@@ -73,9 +88,11 @@ class App extends React.Component {
     this.setState({ filter });
   };
 
-  handleUpdateTask = (id, changes) => {
+  handleUpdateTask = (id, updates) => {
     this.setState((prev) => ({
-      tasks: prev.tasks.map((t) => (t.id === id ? { ...t, ...changes } : t)),
+      tasks: prev.tasks.map((task) =>
+        task.id === id ? { ...task, ...updates } : task,
+      ),
     }));
   };
 

@@ -4,43 +4,25 @@ import './task.css';
 import { formatDistanceToNow } from 'date-fns';
 
 class Task extends Component {
-  componentDidMount() {
-    this.interval = setInterval(() => {
-      if (this.props.isTiming) {
-        this.forceUpdate();
-      }
-    }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: false,
+      tempLabel: props.label,
+    };
   }
 
   handleStartStop = () => {
-    const { id, isTiming, timeSpent, startTime, onUpdate } = this.props;
-
-    if (isTiming) {
-      const now = Date.now();
-      const elapsed = now - startTime;
-      onUpdate(id, {
-        isTiming: false,
-        startTime: null,
-        timeSpent: timeSpent + elapsed,
-      });
-    } else {
-      onUpdate(id, {
-        isTiming: true,
-        startTime: Date.now(),
-      });
-    }
+    const { id, isTiming, onUpdate } = this.props;
+    onUpdate(id, { isTiming: !isTiming });
   };
 
   formatTime = (ms) => {
-    const total = Math.floor(ms / 1000);
-    const h = Math.floor(total / 3600);
-    const m = Math.floor((total % 3600) / 60);
-    const s = total % 60;
-    return [h, m, s].map((val) => String(val).padStart(2, '0')).join(':');
+    if (!Number.isFinite(ms) || ms < 0) return '00:00';
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
   render() {
@@ -52,18 +34,11 @@ class Task extends Component {
       onToggle,
       onDelete,
       onEdit,
-      timeSpent,
       isTiming,
-      startTime,
+      timeLeft,
     } = this.props;
 
-    const actualTime =
-      isTiming && startTime ? timeSpent + (Date.now() - startTime) : timeSpent;
-
-    const { isEditing, tempLabel } = this.state || {
-      isEditing: false,
-      tempLabel: label,
-    };
+    const { isEditing, tempLabel } = this.state;
 
     return (
       <li className={`task ${completed ? 'completed' : ''}`}>
@@ -73,23 +48,21 @@ class Task extends Component {
           onChange={() => onToggle(id)}
         />
         {isEditing ? (
-          <>
-            <input
-              type="text"
-              value={tempLabel}
-              onChange={(e) => this.setState({ tempLabel: e.target.value })}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  if (tempLabel.trim()) {
-                    onEdit(id, tempLabel.trim());
-                    this.setState({ isEditing: false });
-                  }
-                } else if (e.key === 'Escape') {
-                  this.setState({ isEditing: false, tempLabel: label });
+          <input
+            type="text"
+            value={tempLabel}
+            onChange={(e) => this.setState({ tempLabel: e.target.value })}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                if (tempLabel.trim()) {
+                  onEdit(id, tempLabel.trim());
+                  this.setState({ isEditing: false });
                 }
-              }}
-            />
-          </>
+              } else if (e.key === 'Escape') {
+                this.setState({ isEditing: false, tempLabel: label });
+              }
+            }}
+          />
         ) : (
           <>
             <label>{label}</label>
@@ -97,8 +70,12 @@ class Task extends Component {
               created {formatDistanceToNow(created, { addSuffix: true })}
             </span>
             <div className="timer">
-              <span>{this.formatTime(actualTime)}</span>
-              <button type="button" onClick={this.handleStartStop}>
+              <span>{this.formatTime(timeLeft)}</span>
+              <button
+                type="button"
+                onClick={this.handleStartStop}
+                disabled={timeLeft <= 0}
+              >
                 {isTiming ? '⏸' : '▶'}
               </button>
             </div>
@@ -119,19 +96,5 @@ class Task extends Component {
     );
   }
 }
-
-Task.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  completed: PropTypes.bool.isRequired,
-  created: PropTypes.instanceOf(Date).isRequired,
-  onToggle: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  timeSpent: PropTypes.number.isRequired,
-  isTiming: PropTypes.bool.isRequired,
-  startTime: PropTypes.number,
-  onUpdate: PropTypes.func.isRequired,
-};
 
 export default Task;

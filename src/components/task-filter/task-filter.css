@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  display: flex;
+  gap: 10px;
 }
 
 .filters li {
@@ -19,16 +21,33 @@
   border-radius: 3px;
 }
 
+.filters button {
+  padding: 2px 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
 .filters li button:not(.selected) {
   cursor: pointer;
 }
 
-.filters li button.selected {
-  border-color: rgba(175, 47, 47, 0.2);
+.filters button:hover {
+  border-color: #b0c4de;
+  background-color: #f0f8ff;
 }
 
-.filters li:hover button {
-  border-color: rgba(175, 47, 47, 0.1);
+.filters button.selected {
+  background-color: #5ca0f2; 
+  color: white;
+  border-color: #5ca0f2;
 }
 
 .filters button {
